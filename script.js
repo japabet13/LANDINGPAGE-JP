@@ -281,12 +281,56 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!container) return;
 
         const notifications = [
-            { icon: '💰', text: '<strong>Thiago</strong> - "uma semana e 1670 reais e ja vou viajar com essa grana."' },
-            { icon: '🚀', text: '<strong>Maria C.</strong> de São Paulo, SP acabou de adquirir a <strong>Mentoria</strong>.' },
-            { icon: '🤖', text: '<strong>Carla S.</strong> de Curitiba, PR acabou de assinar o <strong>Surentrix</strong>.' },
-            { icon: '💬', text: '<strong>Lucas M.</strong> de Salvador, BA entrou no chat.' },
-            { icon: '💰', text: '<strong>Ana B.</strong> de Recife, PE acabou de lucrar <strong>R$ 280,00</strong> com a IA!' },
-            { icon: '🚀', text: '<strong>Ricardo F.</strong> de Porto Alegre, RS acabou de adquirir a <strong>Mentoria</strong>.' }
+            { icon: '🚀', text: '<strong>Ana</strong> acabou de comprar a mentoria!' },
+            { icon: '🤖', text: '<strong>Thiago</strong> assinou a Inteligência Artificial Samurai IA.' },
+            { icon: '💬', text: '<strong>Jorge</strong> entrou no chat agora mesmo.' },
+            { icon: '🚀', text: '<strong>Lucas</strong> comprou o curso completo.' },
+            { icon: '🤖', text: '<strong>Gisele</strong> iniciou a jornada com a IA.' },
+            { icon: '💬', text: '<strong>Marcela</strong> acabou de sair do chat.' },
+            { icon: '💰', text: '<strong>Rafael:</strong> "fechei meu primeiro lucro hoje com 320 reais!"' },
+            { icon: '💡', text: '<strong>Bianca:</strong> "não imaginava que fosse tão simples!"' },
+            { icon: '🚀', text: '<strong>Carlos</strong> comprou o acesso ao SurentriX.' },
+            { icon: '💬', text: '<strong>Camila</strong> está digitando no chat...' },
+            { icon: '💰', text: '<strong>João:</strong> "meu segundo dia e já fiz 2x o que investi."' },
+            { icon: '🤖', text: '<strong>Vanessa</strong> ativou o plano mensal agora.' },
+            { icon: '🚀', text: '<strong>Pedro</strong> entrou na mentoria avançada.' },
+            { icon: '💰', text: '<strong>Larissa:</strong> "nunca imaginei ganhar em casa com isso!"' },
+            { icon: '🚀', text: '<strong>Felipe</strong> comprou o combo curso + IA.' },
+            { icon: '🤖', text: '<strong>Julia</strong> iniciou o protocolo Samurai agora.' },
+            { icon: '💰', text: '<strong>Leandro:</strong> "só essa semana já saquei 2.100 reais."' },
+            { icon: '💬', text: '<strong>Paula</strong> entrou no chat agora mesmo.' },
+            { icon: '💡', text: '<strong>Rodrigo:</strong> "esse suporte no chat vale ouro."' },
+            { icon: '🚀', text: '<strong>Aline</strong> fez a assinatura anual!' },
+            { icon: '💬', text: '<strong>Fernando:</strong> "acabei de entrar e estou animado!"' },
+            { icon: '🤖', text: '<strong>Tamires</strong> acessou o SurentriX pela primeira vez.' },
+            { icon: '💬', text: '<strong>Henrique</strong> saiu do chat após tirar dúvidas.' },
+            { icon: '🚀', text: '<strong>Clara</strong> comprou o curso Starter.' },
+            { icon: '🤖', text: '<strong>Vitor</strong> ativou a IA para apostas.' },
+            { icon: '💰', text: '<strong>Luana:</strong> "primeira semana, 900 reais de lucro!"' },
+            { icon: '🤖', text: '<strong>Bruno</strong> acabou de fazer login no painel.' },
+            { icon: '💡', text: '<strong>Natália:</strong> "simples, prático e lucrativo."' },
+            { icon: '🤖', text: '<strong>Igor</strong> está testando o plano gratuito.' },
+            { icon: '🚀', text: '<strong>Bruna</strong> finalizou a compra da mentoria agora.' },
+            { icon: '🚀', text: '<strong>André</strong> iniciou o curso completo.' },
+            { icon: '💰', text: '<strong>Isabela:</strong> "fiz 1700 em 3 dias!"' },
+            { icon: '🤖', text: '<strong>Renan</strong> acabou de desbloquear o modo avançado.' },
+            { icon: '🚀', text: '<strong>Tatiane</strong> entrou na comunidade fechada.' },
+            { icon: '💰', text: '<strong>Guilherme:</strong> "acabei de bater minha meta semanal."' },
+            { icon: '🤖', text: '<strong>Larah</strong> iniciou o protocolo Samurai.' },
+            { icon: '💡', text: '<strong>Eduardo:</strong> "essa IA é surreal!"' },
+            { icon: '💬', text: '<strong>Mariana</strong> está online no chat agora.' },
+            { icon: '🚀', text: '<strong>Érica</strong> comprou o curso Starter Pack.' },
+            { icon: '💰', text: '<strong>Davi:</strong> "já fiz 2 saques no Pix só hoje."' },
+            { icon: '🤖', text: '<strong>Sabrina</strong> entrou no SurentriX pela primeira vez.' },
+            { icon: '🤖', text: '<strong>Alan</strong> ativou a IA com saldo mínimo.' },
+            { icon: '🚀', text: '<strong>Priscila</strong> acaba de assinar a plataforma.' },
+            { icon: '💰', text: '<strong>Everton:</strong> "a IA acertou 4 entradas seguidas!"' },
+            { icon: '🤖', text: '<strong>Tainá</strong> está explorando o painel agora.' },
+            { icon: '💰', text: '<strong>Gustavo:</strong> "primeira semana, já no lucro!"' },
+            { icon: '🤖', text: '<strong>Dayane</strong> comprou o plano mensal da IA.' },
+            { icon: '🚀', text: '<strong>Diego</strong> finalizou a compra da mentoria.' },
+            { icon: '🚀', text: '<strong>Milena</strong> está participando do grupo exclusivo.' },
+            { icon: '💬', text: '<strong>William</strong> está digitando no chat agora mesmo...' }
         ];
 
         function showPopup() {
@@ -304,9 +348,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 popup.remove();
             }, 5000); // Popup fica visível por 5s
         }
-
-        // Mostra um popup a cada 7 segundos
-        setInterval(showPopup, 7000);
+        
+        function scheduleNextPopup() {
+            const randomInterval = Math.floor(Math.random() * (25000 - 8000 + 1)) + 8000;
+            setTimeout(() => {
+                showPopup();
+                scheduleNextPopup();
+            }, randomInterval);
+        }
+        
+        scheduleNextPopup();
     }
 
     // Inicia as funções
