@@ -281,11 +281,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!container) return;
 
         const notifications = [
-            { name: 'Thiago', text: '"uma semana e 1670 reais e ja vou viajar com essa grana."' },
-            { name: 'Maria', text: '"amei a mentoria, já fiz 5000 só em casa..."' },
-            { name: 'Lucas', text: '"uma semana e já dobrei meu investimento inicial."' },
-            { name: 'Ana', text: '"consegui minha renda extra como dona de casa, 3500 no mês!"' },
-            { name: 'Jorge', text: '"acabei de entrar e já estou ansioso para começar!"' }
+            { icon: '💰', text: '<strong>Thiago</strong> - "uma semana e 1670 reais e ja vou viajar com essa grana."' },
+            { icon: '🚀', text: '<strong>Maria C.</strong> de São Paulo, SP acabou de adquirir a <strong>Mentoria</strong>.' },
+            { icon: '🤖', text: '<strong>Carla S.</strong> de Curitiba, PR acabou de assinar o <strong>Surentrix</strong>.' },
+            { icon: '💬', text: '<strong>Lucas M.</strong> de Salvador, BA entrou no chat.' },
+            { icon: '💰', text: '<strong>Ana B.</strong> de Recife, PE acabou de lucrar <strong>R$ 280,00</strong> com a IA!' },
+            { icon: '🚀', text: '<strong>Ricardo F.</strong> de Porto Alegre, RS acabou de adquirir a <strong>Mentoria</strong>.' }
         ];
 
         function showPopup() {
@@ -293,7 +294,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const popup = document.createElement('div');
             popup.classList.add('social-proof-popup');
-            popup.innerHTML = `<strong>${randomNotification.name}</strong> - ${randomNotification.text}`;
+            popup.innerHTML = `
+                <span class="icon">${randomNotification.icon}</span>
+                <p>${randomNotification.text}</p>
+            `;
             container.appendChild(popup);
 
             setTimeout(() => {

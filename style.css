@@ -385,6 +385,16 @@ section {
     font-size: 0.85rem;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
     max-width: 300px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.social-proof-popup .icon {
+    font-size: 1.2rem;
+}
+.social-proof-popup p {
+    margin: 0;
+    line-height: 1.3;
 }
 .social-proof-popup strong {
     font-weight: 700;
