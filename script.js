@@ -124,12 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const closePopupButton = document.querySelector('.popup-close');
         const popupCtaButton = document.getElementById('popup-cta-button');
         const videoCtaButton = document.getElementById('video-cta-button');
-        const buttonText = videoCtaButton.querySelector('.button-text');
         const pasteButton = document.getElementById('paste-entry-button');
-
-        if(videoCtaButton) {
-            videoCtaButton.classList.add('disabled');
-        }
 
         copyButton.addEventListener('click', () => {
             const textToCopy = entryTextElement.innerText;
@@ -183,19 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
             card.addEventListener('click', () => {
                 popupOverlay.style.display = 'flex';
                 animateCounter(prizeCounter, 0, 6240, 1500);
-
-                // Inicia o timer de 10 segundos para habilitar o botão
-                setTimeout(() => {
-                    if (videoCtaButton) {
-                        videoCtaButton.classList.remove('disabled');
-                        videoCtaButton.classList.add('unlocked-pulse');
-                        const lockIcon = videoCtaButton.querySelector('.lock-icon');
-                        const whatsappIcon = videoCtaButton.querySelector('.whatsapp-icon');
-                        if (lockIcon) lockIcon.style.display = 'none';
-                        if (whatsappIcon) whatsappIcon.style.display = 'inline-block';
-                        if (buttonText) buttonText.textContent = 'FALAR COM ESPECIALISTA';
-                    }
-                }, 10000); // 10 segundos
             });
         });
 
@@ -218,10 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (videoCtaButton) {
             videoCtaButton.addEventListener('click', (event) => {
-                if (videoCtaButton.classList.contains('disabled')) {
-                    event.preventDefault();
-                    return;
-                }
                 if(typeof fbq === 'function') {
                     fbq('track', 'Contact');
                 }
