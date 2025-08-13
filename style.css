@@ -27,7 +27,7 @@ body {
     background-color: var(--dark-bg);
     color: var(--text-light);
     line-height: 1.6;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('background.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://i.ibb.co/yFsHTJYR/Design-sem-nome.jpg');
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
@@ -288,28 +288,17 @@ section {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-}
-#video-cta-button.disabled {
-    background-color: #888;
-    color: #ccc;
-    opacity: 0.6;
-    cursor: not-allowed;
-    pointer-events: none;
-}
-#video-cta-button:not(.disabled) {
     background-color: var(--whatsapp-green);
     color: white;
+    animation: pulse-button 1.5s infinite;
 }
-#video-cta-button:not(.disabled):hover {
+#video-cta-button:hover {
     background-color: var(--whatsapp-hover-green);
 }
 #video-cta-button .icon {
     width: 1.2em;
     height: 1.2em;
     vertical-align: middle;
-}
-#video-cta-button.unlocked-pulse {
-    animation: pulse-button 1.5s infinite;
 }
 
 /* --- POPUP DE PRÊMIO --- */
