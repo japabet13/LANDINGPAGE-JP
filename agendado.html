@@ -1,153 +1,66 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Obrigado por Agendar!</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Obrigado por Agendar!</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Pré-conexão para fontes Google -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+<!-- Fonts Google -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
 
-    <!-- PIXEL FACEBOOK -->
-    <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
+<!-- PIXEL FACEBOOK -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','23999581466319387');
+fbq('track','PageView');
+</script>
+<noscript>
+<img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=23999581466319387&ev=PageView&noscript=1"/>
+</noscript>
 
-    fbq('init', '23999581466319387'); 
-    fbq('track', 'PageView');
-    </script>
-    <noscript>
-    <img height="1" width="1" style="display:none" 
-         src="https://www.facebook.com/tr?id=23999581466319387&ev=PageView&noscript=1"/>
-    </noscript>
-    <!-- FIM PIXEL -->
-
-    <style>
-        :root {
-            --primary-color: #f1c40f;
-            --whatsapp-green: #2F8D42;
-            --whatsapp-hover-green: #256F34;
-            --dark-bg: #1a1a1a;
-            --card-bg: rgba(44,33,15,0.85);
-            --card-border: rgba(243,156,18,0.3);
-            --text-light: #f0f0f0;
-            --text-medium: #bbbbbb;
-        }
-
-        * { margin:0; padding:0; box-sizing:border-box; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            line-height: 1.6;
-            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://i.ibb.co/yFsHTJYR/Design-sem-nome.jpg');
-            background-size: cover;
-            background-position: center center;
-            background-attachment: fixed;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .thankyou-container {
-            text-align: center;
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 3rem 2rem;
-            border-radius: 12px;
-            border: 1px solid var(--card-border);
-            max-width: 600px;
-            width: 100%;
-        }
-
-        .thankyou-container h1 {
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
-            font-weight: 900;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-        }
-
-        .thankyou-container p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            color: var(--text-medium);
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 30px;
-            background: var(--whatsapp-green);
-            color: #fff;
-            font-weight: 700;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-
-        .btn-primary:hover {
-            background: var(--whatsapp-hover-green);
-            transform: scale(1.05);
-        }
-    </style>
+<style>
+:root {
+    --primary-color:#f1c40f;
+    --whatsapp-green:#2F8D42;
+    --whatsapp-hover-green:#256F34;
+    --dark-bg:#1a1a1a;
+    --card-bg: rgba(44,33,15,0.85);
+    --card-border: rgba(243,156,18,0.3);
+    --text-light:#f0f0f0;
+    --text-medium:#bbbbbb;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background-color:var(--dark-bg);color:var(--text-light);
+line-height:1.6;background-image:linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://i.ibb.co/yFsHTJYR/Design-sem-nome.jpg');
+background-size:cover;background-position:center center;background-attachment:fixed;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;}
+.thankyou-container{text-align:center;background:var(--card-bg);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+padding:3rem 2rem;border-radius:12px;border:1px solid var(--card-border);max-width:600px;width:100%;}
+.thankyou-container h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;margin-bottom:20px;color:var(--primary-color);}
+.thankyou-container p{font-size:1.1rem;margin-bottom:30px;color:var(--text-medium);}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;padding:12px 30px;background:var(--whatsapp-green);color:#fff;font-weight:700;text-decoration:none;border-radius:8px;transition:all 0.3s;}
+.btn-primary:hover{background:var(--whatsapp-hover-green);transform:scale(1.05);}
+</style>
 </head>
 <body>
 
 <div class="thankyou-container">
-    <h1>Obrigado por Agendar sua Call!</h1>
-    <p>Você receberá um e-mail de confirmação e um lembrete do seu horário agendado. Fique atento!</p>
-    <a href="https://wa.me/5583999658835?text=Ol%C3%A1%2C%20acabei%20de%20agendar%20minha%20call%20estrat%C3%A9gica%2C%20estou%20ansioso(a)%20para%20receber%20a%20tutoria%20com%20o%20especialista" class="btn-primary">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.487 5.235 3.487 8.413 0 6.557-5.338 11.892-11.894 11.892-1.99 0-3.903-.52-5.687-1.475l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.886-.001 2.267.655 4.398 1.803 6.243l.494 1.102-1.215 4.422 4.462-1.173.985.495z"/></svg>
-        Entrar em Contato
-    </a>
+<h1>Obrigado por Agendar sua Call!</h1>
+<p>Você receberá um e-mail de confirmação e lembrete do seu horário. Fique atento!</p>
+<a href="https://wa.me/5583999658835?text=Ol%C3%A1%2C%20acabei%20de%20agendar%20minha%20call%20estrat%C3%A9gica%2C%20estou%20ansioso(a)%20para%20receber%20a%20tutoria%20com%20o%20especialista!" class="btn-primary" target="_blank">
+    Entrar em Contato
+</a>
 </div>
 
 <script>
-    // Captura UTM da URL
-    function getUTMParams() {
-        let params = {};
-        window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
-            function(str,key,value){ params[key] = decodeURIComponent(value); });
-        return params;
-    }
-
-    // Dispara Lead no Pixel + CAPI
-    (function(){
-        let utmParams = getUTMParams();
-        let eventId = 'lead_' + Date.now();
-
-        // Pixel Facebook
-        fbq('track', 'Lead', { event_id: eventId });
-
-        // Supabase CAPI
-        fetch('https://edjyctaphtquibevgjla.supabase.co/functions/v1/capi-event', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                event_name: 'Lead',
-                event_id: eventId,
-                event_source_url: window.location.href,
-                utms: utmParams
-            })
-        })
-        .then(res => res.json())
-        .then(data => console.log('Success CAPI Lead:', data))
-        .catch(err => console.error('Error CAPI Lead:', err));
-    })();
-</script>
-
-</body>
-</html>
+// Captura UTMs
+function getUTMParams(){
