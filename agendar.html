@@ -1,95 +1,89 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Agende sua Call Estratégica</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Agende sua Call Estratégica</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Fonts Google -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
 
-<!-- Facebook Pixel -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','23999581466319387');
-fbq('track','PageView');
-</script>
-<noscript>
-<img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=23999581466319387&ev=PageView&noscript=1"/>
-</noscript>
+    <!-- PIXEL FACEBOOK -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
 
-<style>
-:root {
-    --primary-color:#f1c40f;
-    --dark-bg:#1a1a1a;
-    --card-bg: rgba(44,33,15,0.85);
-    --card-border: rgba(243,156,18,0.3);
-    --text-light:#f0f0f0;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Inter',sans-serif;background-color:var(--dark-bg);color:var(--text-light);
-line-height:1.6;background-image:linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://i.ibb.co/yFsHTJYR/Design-sem-nome.jpg');
-background-size:cover;background-position:center center;background-attachment:fixed;}
-main{padding:50px 5%;max-width:900px;margin:0 auto;display:flex;flex-direction:column;align-items:center;}
-.main-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;line-height:1.2;margin-bottom:2rem;text-transform:uppercase;text-align:center;}
-.calendly-container{width:100%;background:var(--card-bg);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-border:1px solid var(--card-border);border-radius:12px;overflow:hidden;}
-</style>
+    fbq('init', '23999581466319387'); 
+    fbq('track', 'PageView');
+    </script>
+    <noscript>
+    <img height="1" width="1" style="display:none" 
+         src="https://www.facebook.com/tr?id=23999581466319387&ev=PageView&noscript=1"/>
+    </noscript>
+
+    <style>
+        body { font-family:'Inter',sans-serif; background:#1a1a1a; color:#f0f0f0; display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px; }
+        main { max-width:900px; width:100%; }
+        .calendly-container { width:100%; height:700px; }
+    </style>
 </head>
 <body>
+
 <main>
-<h1 class="main-title">Agende sua Call Estratégica</h1>
-<div class="calendly-container">
-    <div class="calendly-inline-widget"
-         data-url="https://calendly.com/japaoprotocol/call-estrategica-com-consultor?hide_event_type_details=1&hide_gdpr_banner=1&background_color=1a1a1a&text_color=ffffff&primary_color=f1c40f&locale=pt_BR"
-         style="min-width:320px;height:700px;">
+    <h1 style="text-align:center;color:#f1c40f;margin-bottom:2rem;">Agende sua Call Estratégica</h1>
+
+    <div class="calendly-container">
+        <div class="calendly-inline-widget" 
+             data-url="https://calendly.com/japaoprotocol/call-estrategica-com-consultor?hide_event_type_details=1&hide_gdpr_banner=1&background_color=1a1a1a&text_color=ffffff&primary_color=f1c40f&locale=pt_BR" 
+             style="min-width:320px;height:700px;">
+        </div>
+        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
     </div>
-    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-</div>
 </main>
 
 <script>
-// Captura UTMs
-function getUTMParams(){let p={};window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(str,k,v){p[k]=decodeURIComponent(v);});return p;}
-
-// Listener Calendly
-window.addEventListener('message',function(e){
-    if(!e.origin.includes('calendly.com')) return;
-    console.log('Mensagem do Calendly:', e.data);
-
-    if(e.data.event && e.data.event.indexOf('calendly.event_scheduled')>-1){
-        console.log('Evento Schedule detectado!');
-        let utm=getUTMParams(),eventId='sch_'+Date.now();
-
-        // Pixel
-        fbq('track','Schedule',{event_id:eventId});
-        console.log('Schedule enviado ao Pixel');
-
-        // Supabase CAPI
-        fetch('https://edjyctaphtquibevgjla.supabase.co/functions/v1/capi-event',{
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({
-                event_name:'Schedule',
-                event_id:eventId,
-                event_source_url:window.location.href,
-                utms:utm
-            })
-        }).then(r=>r.json()).then(d=>console.log('Success CAPI:',d)).catch(err=>console.error('Error CAPI:',err));
-
-        setTimeout(()=>{window.location.href='agendado.html';},500);
+    // Captura parâmetros UTM
+    function getUTMParams() {
+        let params = {};
+        window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+            function(str,key,value){ params[key] = decodeURIComponent(value); });
+        return params;
     }
-});
+
+    // Listener do Calendly
+    window.addEventListener('message', function(e){
+        if(e.data.event && e.data.event.indexOf('calendly.event_scheduled') > -1){
+            let utmParams = getUTMParams();
+            let eventId = 'schedule_' + Date.now();
+
+            // 1. Dispara evento Schedule no Pixel
+            fbq('track', 'Schedule', { event_id: eventId });
+
+            // 2. Envia para Supabase CAPI
+            fetch('https://edjyctaphtquibevgjla.supabase.co/functions/v1/capi-event', {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({
+                    event_name:'Schedule',
+                    event_id:eventId,
+                    event_source_url:window.location.href,
+                    utms:utmParams
+                })
+            }).then(res=>res.json()).then(data=>console.log('CAPI Schedule:',data))
+            .catch(err=>console.error('CAPI Schedule Error:',err));
+
+            // 3. Redireciona após 500ms
+            setTimeout(()=>{ window.location.href='obrigado.html'; }, 500);
+        }
+    });
 </script>
+
 </body>
 </html>
