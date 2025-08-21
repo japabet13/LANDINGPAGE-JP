@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Ferramenta de Vendas Unificada</title>
+    <style type="text/css">
+        /* --- GERAL & LAYOUT --- */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c2c2c;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .nav-container {
+            background-color: #1a1a1a;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #444;
+        }
+        .nav-button {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin: 5px;
+        }
+        .nav-button:hover, .nav-button.active {
+            background-color: #357abd;
+            transform: translateY(-2px);
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        h1 {
+            text-align: center;
+            color: #6aa84f;
+            margin-bottom: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: #eee;
+            margin-bottom: 20px;
+            font-weight: normal;
+        }
+        textarea, input[type="text"] {
+            width: 95%;
+            border: 1px solid #555;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: #333;
+            color: #f0f0f0;
+            font-family: inherit;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        textarea {
+            height: 90px;
+            resize: vertical;
+        }
+        .card {
+            background-color: #3a3a3a;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #555;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid;
+        }
+        .card h3 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+        .placeholder { font-weight: bold; }
+        .dor { color: #ff8a80; }
+        .ambicao { color: #ffd180; }
+        .sonho { color: #b388ff; }
+        .transformacao { color: #ff80ab; }
+
+        /* --- TOOLTIP --- */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltip-icon {
+            background-color: #4a90e2;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            text-align: center;
+            line-height: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            font-style: normal;
+        }
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 250px;
+            background-color: #1a1a1a;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9em;
+            font-style: normal;
+            line-height: 1.4;
+        }
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+
+        /* --- CABEÇALHO DE RESUMO GLOBAL --- */
+        #summary-header {
+            background-color: #222;
+            border: 1px solid #555;
+            margin-bottom: 20px;
+            padding: 0;
+        }
+        .summary-header-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            cursor: pointer;
+            background-color: #1a1a1a;
+            border-radius: 8px 8px 0 0;
+        }
+        .summary-header-title h2 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #6aa84f;
+        }
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        #toggle-summary, #copy-summary {
+            background: #4a90e2;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            height: 30px;
+            padding: 0 15px;
+            line-height: 30px;
+            text-align: center;
+        }
+         #toggle-summary {
+            width: 30px;
+            font-size: 18px;
+            padding: 0;
+            border-radius: 50%;
+         }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            transition: all 0.3s ease-in-out;
+        }
+        .summary-grid.collapsed {
+            display: none;
+        }
+        .summary-card {
+            background-color: #444;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .summary-card h4 {
+            margin: 0 0 10px 0;
+            font-size: 1em;
+            color: #aaa;
+            text-transform: uppercase;
+        }
+        .summary-card p, .summary-card pre {
+            margin: 0;
+            font-size: 1.1em;
+            font-weight: bold;
+            min-height: 40px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: inherit;
+        }
+
+        /* --- PÁGINA ESCAVAÇÃO --- */
+        .escavacao-content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .escavacao-column .card {
+            margin-bottom: 20px;
+        }
+        .escavacao-column .card .card-header { border-color: #4a90e2; }
+        .info-box {
+            background-color: rgba(0,0,0,0.2);
+            border-left: 3px solid #4a90e2;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 0 4px 4px 0;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+        .tips-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .tips-grid .info-box {
+            margin-bottom: 0;
+            text-align: center;
+        }
+        
+        /* --- PÁGINA PLANO DE AÇÃO --- */
+        .consciousness-display {
+            background-color: #6aa84f;
+            color: #ffffff;
+            font-size: 28pt;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .recommendation-display {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            font-size: 15pt;
+            text-align: center;
+            padding: 15px;
+            margin-top: -10px;
+            margin-bottom: 20px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+        .pillar-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        .pillar .card-header { border-color: #6aa84f; }
+
+        /* --- PÁGINA PROJEÇÃO & FECHAMENTO --- */
+        .dynamic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .dynamic-grid .card p { line-height: 1.6; }
+        .projecao-grid .card .card-header { border-color: #b388ff; }
+        .projecao-grid .info-box { border-left-color: #b388ff; }
+        .fechamento-grid .card .card-header { border-color: #ffd180; }
+        .fechamento-grid .info-box { border-left-color: #ffd180; }
+        .fechamento-grid .transformacao-placeholder { font-size: 1.2em; color: #ff80ab; font-weight: bold; }
+        
+        /* --- PÁGINA LINKS --- */
+        .link-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .link-container input {
+            flex-grow: 1;
+            margin-top: 0;
+        }
+        .link-container button {
+            background-color: #6aa84f;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.3s;
+        }
+        .link-container button:hover {
+            background-color: #5a9442;
+        }
+
+        @media (max-width: 768px) {
+            .escavacao-content-grid, .tips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-container">
+        <button id="btn-escavacao" class="nav-button active" onclick="showPage('escavacao-page')">Escavação</button>
+        <button id="btn-plano" class="nav-button" onclick="showPage('plano-acao-page')">Plano de Ação</button>
+        <button id="btn-projecao" class="nav-button" onclick="showPage('projecao-page')">Projeção</button>
+        <button id="btn-fechamento" class="nav-button" onclick="showPage('fechamento-page')">Fechamento</button>
+        <button id="btn-links" class="nav-button" onclick="showPage('links-page')">Links de Vendas</button>
+    </div>
+
+    <div id="summary-header" class="card">
+        <div class="summary-header-title">
+            <h2 onclick="toggleSummary()">Persona</h2>
+            <div class="header-buttons">
+                <button id="copy-summary" onclick="copySummaryToClipboard()">Copiar</button>
+                <button id="toggle-summary" onclick="toggleSummary()">-</button>
+            </div>
+        </div>
+        <div class="summary-grid" id="summary-grid-content">
+            <div class="summary-card"><h4 style="color: #eee;">Perfil do Cliente</h4><pre id="perfil-cliente-target"></pre></div>
+            <div class="summary-card"><h4 style="color: #ffd180;">Ambição</h4><p id="ambicao-target" class="ambicao"></p></div>
+            <div class="summary-card"><h4 style="color: #ff8a80;">Dor</h4><p id="dor-target" class="dor"></p></div>
+            <div class="summary-card"><h4 style="color: #b388ff;">Sonho</h4><p id="sonho-target" class="sonho"></p></div>
+            <div class="summary-card"><h4 style="color: #ff80ab;">Transformação</h4><p id="transformacao-target" class="transformacao"></p></div>
+            <div class="summary-card"><h4 style="color: #6aa84f;">Nível de Consciência</h4><p id="consciencia-target" style="color: #6aa84f;"></p></div>
+        </div>
+    </div>
+
+    <!-- =================================== -->
+    <!-- INÍCIO DA PÁGINA DE ESCAVAÇÃO       -->
+    <!-- =================================== -->
+    <div id="escavacao-page" class="page active">
+        <div class="escavacao-content-grid">
+            <div class="escavacao-column">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Rapport</h3>
+                        <div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Objetivo:</strong> Entreter o lead, ser um amigo e formar a persona através das respostas.<br><br><strong>Alertas:</strong> ESCUTA ATIVA, ESPELHAMENTO.</span></div>
+                    </div>
+                    <p>Qual seu nome e sua idade?</p>
+                    <input type="text" id="lead-name" placeholder="Ex: João, 35" oninput="saveLeadData()">
+                    <p>Onde você mora?</p>
+                    <textarea id="rapport1" placeholder="Ex: São Paulo, SP" oninput="saveLeadData()"></textarea>
+                    <p>O que de bom tem pra fazer ai junto da família?</p>
+                    <textarea id="rapport2" oninput="saveLeadData()"></textarea>
+                    <p>Qual o nome do seus filho(a)/pai/?</p>
+                    <textarea id="rapport3" oninput="saveLeadData()"></textarea>
+                    <p>Qual o nome da sua esposa/mãe?</p>
+                    <textarea id="rapport4" oninput="saveLeadData()"></textarea>
+                    <p>Você hoje trabalha com o que?</p>
+                    <textarea id="rapport5" oninput="saveLeadData()"></textarea>
+                </div>
+            </div>
+            <div class="escavacao-column">
+                <div class="card">
+                     <div class="card-header">
+                        <h3>Assumir o Controle</h3>
+                        <div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Objetivo:</strong> Ajudar o lead a chegar do zero aos 15 mil reais.<br><br><strong>Alertas:</strong> TONALIDADE SUAVE, PAUSAS DRAMATICAS.</span></div>
+                    </div>
+                    <p>O que você acredita estar <strong>BUSCANDO</strong> através desse agendamento comigo hoje?</p>
+                    <textarea id="control1" oninput="updateControlAndConsciousness()"></textarea>
+                    <p>Qual você acredita ser o maior <strong>PROBLEMA</strong> que impede de você fazer dinheiro com arbitragem?</p>
+                    <textarea id="control2" oninput="updateControlAndConsciousness()"></textarea>
+                    <p>O que você acredita que seja a melhor <strong>SOLUÇÃO</strong> para [DOR] nesse momento?</p>
+                    <textarea id="control3" oninput="updateControlAndConsciousness()"></textarea>
+                    <p>O que você acredita que eu possa te <strong>OFERECER</strong> como ajudar a partir de agora?</p>
+                    <textarea id="control4" oninput="updateControlAndConsciousness()"></textarea>
+                    <p>EU ACREDITO DE FATO QUE CONSIGO TE AJUDAR!</p>
+                    <textarea id="control5" oninput="updateControlAndConsciousness()"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIM DA PÁGINA DE ESCAVAÇÃO -->
+
+    <!-- =================================== -->
+    <!-- INÍCIO DA PÁGINA DE PLANO DE AÇÃO   -->
+    <!-- =================================== -->
+    <div id="plano-acao-page" class="page">
+        <h1>Plano de Ação</h1>
+        <div id="consciousness-level-display" class="consciousness-display"></div>
+        <div id="recommendation-display" class="recommendation-display"></div>
+        <h2>A arbitragem consiste em 4 Pilares fundamentais:</h2>
+        <div class="pillar-container">
+            <div class="card pillar"><div class="card-header"><h3>1. CONTINGENTE</h3><div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Alerta:</strong> RESPEITAR O PROCESSO.</span></div></div><p>Ter uma conta boa em um site de aposta vale mais do que ter o dinheiro para operar, e aqui vamos ter mais de 100 opçoes de casas legalizadas para você e isso garante a longevidade da operaçao.</p></div>
+            <div class="card pillar"><div class="card-header"><h3>2. RADAR INTELIGENTE</h3><div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Alerta:</strong> RESPEITAR O PROCESSO.</span></div></div><p>Tem pessoas que operam entrando em casa por casa caçando oportunidades de entrada e isso da muita dor de cabeça ja a nossa inteligencia artificial tem um radar que vai encontrar a diferença de odds em duas casas ao mesmo tempo, voce sabe o que sao as odds? se sim... entre nesse link que te enviei.</p></div>
+            <div class="card pillar"><div class="card-header"><h3>3. GESTÃO DA BANCA</h3><div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Alerta:</strong> NÃO ENTREGAR O OURO.</span></div></div><p>Agora imagine que você faça 10 entradas por dia... Seria um lucro otimo certo? So que tambem seria uma bagunça imensa... imagine 10 entradas em 20 casas de apostas com saldos diferentes. E é por isso que usamos o SURENTRIX, CONHECE? Vou te explicar o que fazemos nele, copiamos a entrada feita da calculadora da IA e colamos no SURENTIX... ele ira fazer a leitura dos valores de banca, de investimento feito e do lucro garantido. Somando todos os valores completos da operaçao diariamente. Tudo de forma 100% automatica e escalavel.</p></div>
+            <div class="card pillar"><div class="card-header"><h3>4. OPERADOR</h3><div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Alerta:</strong> NÃO ENTREGAR O OURO.</span></div></div><p>Essa é uma operaçao valiosa e extremamente grande não e coisa pequena, portanto quanto mais voce sabe mais voce escala e vou te explicar o porque. São mais de 100 casas diferentes, com 60 esportes diversos e cada um deles tem mais de 30 mercados possiveis e em todos eles nós temos conhecimento operacional hoje. A IA te indica a entrada mais lucrativa mas e se voce nao entender nada sobre uma entrada de basebol ou cricket por exemplo? Voce vai ficar de fora enquanto quem sabe fazer analises profissionais lucram o dobro ou ate mesmo 10x mais que voce! entao por isso é importante saber fazer a analise profissional pois alem de escalar a sua operação evita possiveis erros operacionais feitos na base do achismo ou do amadorismo.</p></div>
+        </div>
+    </div>
+    <!-- FIM DA PÁGINA DE PLANO DE AÇÃO -->
+
+    <!-- =================================== -->
+    <!-- INÍCIO DA PÁGINA DE PROJEÇÃO       -->
+    <!-- =================================== -->
+    <div id="projecao-page" class="page">
+        <h1>Projeção Emocional</h1>
+        <div class="dynamic-grid projecao-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Levar ao Céu</h3>
+                    <div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Objetivo:</strong> Faça o lead visualizar o sonho dele acontecendo junto de você.<br><br><strong>Alertas:</strong> ESCUTA ATIVA, ESPELHAMENTO.</span></div>
+                </div>
+                <p>Agora que você já entendeu o que você deve fazer, eu quero que você me responda uma pergunta muito importante…</p>
+                <p style="font-weight: bold; margin-top: 15px;">QUAL SEU MAIOR SONHO?</p>
+                <textarea id="maior-sonho-input" oninput="saveLeadData()" placeholder="Digite o maior sonho do lead aqui..."></textarea>
+                <p id="projecao-script-1" style="margin-top: 15px;"></p>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Puxar pro Inferno</h3>
+                    <div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Objetivo:</strong> Extraia a transformação que o lead espera para sua vida.<br><br><strong>Alertas:</strong> TONALIDADE SUAVE, PAUSAS DRAMATICAS.</span></div>
+                </div>
+                <p id="projecao-script-2-static"></p>
+                <textarea id="transformacao-input-projecao" oninput="updateTransformationFromProjecao(this.value)" placeholder="O que está faltando? (Resposta para Transformação)"></textarea>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Primeiro SIM</h3>
+                    <div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Objetivo:</strong> Aqui começa o processo da conversão.<br><br><strong>Alerta:</strong> RESPEITAR O PROCESSO.</span></div>
+                </div>
+                <p id="projecao-script-3"></p>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Segundo SIM</h3>
+                    <div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Objetivo:</strong> Ao terminar puxe saco do lead, fale como ele é gente boa, inteligente, esforçado e honesto.<br><br><strong>Alerta:</strong> RESPEITAR O PROCESSO.</span></div>
+                </div>
+                <p id="projecao-script-4"></p>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Terceiro SIM</h3>
+                    <div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Objetivo:</strong> Mostre que esta muito feliz de poder ajuda-lo.<br><br><strong>Alerta:</strong> RESPEITAR O PROCESSO.</span></div>
+                </div>
+                <p id="projecao-script-5"></p>
+            </div>
+        </div>
+    </div>
+    <!-- FIM DA PÁGINA DE PROJEÇÃO -->
+
+    <!-- =================================== -->
+    <!-- INÍCIO DA PÁGINA DE FECHAMENTO      -->
+    <!-- =================================== -->
+    <div id="fechamento-page" class="page">
+        <h1>Fechamento</h1>
+        <div class="dynamic-grid fechamento-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Ancoragem (R$4997)</h3>
+                    <div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Objetivo:</strong> Acredite cegamente no produto.<br><br><strong>Alertas:</strong> TONALIDADE SUAVE, PAUSAS DRAMATICAS.</span></div>
+                </div>
+                <p id="fechamento-script-1"></p>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Momento Financeiro</h3>
+                    <div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Objetivo:</strong> Nao vender o produto, mas sim a transformação.<br><br><strong>Alerta:</strong> Energia aplicada após ancoragem.</span></div>
+                </div>
+                <p id="fechamento-script-2"></p>
+            </div>
+            <div class="card"><div class="card-header"><h3>Oferta (R$997)</h3><div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Objetivo:</strong> SE ELE PERGUNTAR FALE OS BENEFICIOS.</span></div></div><p id="fechamento-script-3"></p></div>
+            <div class="card"><div class="card-header"><h3>Benefícios</h3><div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Objetivo:</strong> CASO NAO PASSE CONFIANÇA FALE DAS GARANTIAS.<br><br><strong>Alerta:</strong> Ter timing cirúrgico.</span></div></div><p id="fechamento-script-4"></p></div>
+            <div class="card"><div class="card-header"><h3>Garantias</h3><div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Objetivo:</strong> CASO NÃO VEJA VALOR NA OFERTA FALE DOS BONUS.<br><br><strong>Alerta:</strong> Ter timing cirúrgico.</span></div></div><p id="fechamento-script-5"></p></div>
+            <div class="card"><div class="card-header"><h3>Bônus</h3><div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Objetivo:</strong> CASO NÃO QUEIRA FECHAR NA HORA USE O GATILHO DE URGENCIA.<br><br><strong>Alerta:</strong> Ter timing cirúrgico.</span></div></div><p id="fechamento-script-6"></p></div>
+            <div class="card"><div class="card-header"><h3>Urgência</h3><div class="tooltip"><i class="tooltip-icon">i</i><span class="tooltip-text"><strong>Objetivo:</strong> Driblar todas objeçoes e só em ultimo caso mexer no valor do produto.<br><br><strong>Alerta:</strong> Ter timing cirúrgico.</span></div></div><p id="fechamento-script-7"></p></div>
+        </div>
+    </div>
+    <!-- FIM DA PÁGINA DE FECHAMENTO -->
+    
+    <!-- =================================== -->
+    <!-- INÍCIO DA PÁGINA DE LINKS DE VENDAS -->
+    <!-- =================================== -->
+    <div id="links-page" class="page">
+        <h1>Links de Vendas</h1>
+        <h2>Japão Protocol</h2>
+        <div class="dynamic-grid">
+            <div class="card">
+                <div class="card-header"><h3>Japão Protocol</h3></div>
+                <p>R$ 47,00</p>
+                <div class="link-container">
+                    <input type="text" id="link-japao" value="https://pay.hotmart.com/R100638502R" readonly>
+                    <button onclick="copyLink('link-japao', this)">Copiar</button>
+                </div>
+            </div>
+        </div>
+        <h2>Surentrix</h2>
+        <div class="dynamic-grid">
+            <div class="card">
+                <div class="card-header"><h3>Mensal</h3></div>
+                <p>R$ 47,00</p>
+                <div class="link-container">
+                    <input type="text" id="link-surentrix-mensal" value="https://pay.hotmart.com/J100652623K?off=vux58xm1" readonly>
+                    <button onclick="copyLink('link-surentrix-mensal', this)">Copiar</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3>Anual</h3></div>
+                <p>R$ 347,00</p>
+                <div class="link-container">
+                    <input type="text" id="link-surentrix-anual" value="https://pay.hotmart.com/J100652623K?off=9e2dtcma" readonly>
+                    <button onclick="copyLink('link-surentrix-anual', this)">Copiar</button>
+                </div>
+            </div>
+        </div>
+        <h2>Samurai Protocol</h2>
+        <div class="dynamic-grid">
+            <div class="card"><div class="card-header"><h3>100% on</h3></div><p>R$ 997,00</p><div class="link-container"><input type="text" id="link-samurai-100" value="https://pay.hotmart.com/A100657499N" readonly><button onclick="copyLink('link-samurai-100', this)">Copiar</button></div></div>
+            <div class="card"><div class="card-header"><h3>20% off</h3></div><p>R$ 797,00</p><div class="link-container"><input type="text" id="link-samurai-20" value="https://pay.hotmart.com/A100657499N?off=3fwuj0tb" readonly><button onclick="copyLink('link-samurai-20', this)">Copiar</button></div></div>
+            <div class="card"><div class="card-header"><h3>40% off</h3></div><p>R$ 597,00</p><div class="link-container"><input type="text" id="link-samurai-40" value="https://pay.hotmart.com/A100657499N?off=u6em0d23" readonly><button onclick="copyLink('link-samurai-40', this)">Copiar</button></div></div>
+            <div class="card"><div class="card-header"><h3>60% off</h3></div><p>R$ 397,00</p><div class="link-container"><input type="text" id="link-samurai-60" value="https://pay.hotmart.com/A100657499N?off=mv2q4skh" readonly><button onclick="copyLink('link-samurai-60', this)">Copiar</button></div></div>
+            <div class="card"><div class="card-header"><h3>80% off</h3></div><p>R$ 197,00</p><div class="link-container"><input type="text" id="link-samurai-80" value="https://pay.hotmart.com/A100657499N?off=i3tg60rr" readonly><button onclick="copyLink('link-samurai-80', this)">Copiar</button></div></div>
+            <div class="card"><div class="card-header"><h3>Parcelado 3x</h3></div><p>R$ 347,00</p><div class="link-container"><input type="text" id="link-samurai-3x" value="https://pay.hotmart.com/J100652623K?off=0x38j0x4" readonly><button onclick="copyLink('link-samurai-3x', this)">Copiar</button></div></div>
+        </div>
+    </div>
+    <!-- FIM DA PÁGINA DE LINKS DE VENDAS -->
+
+
+    <script>
+        // --- LÓGICA GERAL E DE NAVEGAÇÃO ---
+        const pages = document.querySelectorAll('.page');
+        const navButtons = document.querySelectorAll('.nav-button');
+
+        function showPage(pageId) {
+            pages.forEach(page => page.classList.remove('active'));
+            navButtons.forEach(button => button.classList.remove('active'));
+
+            document.getElementById(pageId).classList.add('active');
+
+            const pageButtonMap = {
+                'escavacao-page': 'btn-escavacao',
+                'plano-acao-page': 'btn-plano',
+                'projecao-page': 'btn-projecao',
+                'fechamento-page': 'btn-fechamento',
+                'links-page': 'btn-links'
+            };
+            document.getElementById(pageButtonMap[pageId]).classList.add('active');
+            
+            if (pageId === 'plano-acao-page') updatePlanoAcaoDisplay();
+            if (pageId === 'projecao-page') renderProjecaoScripts();
+            if (pageId === 'fechamento-page') renderFechamentoScripts();
+        }
+        
+        function toggleSummary() {
+            const content = document.getElementById('summary-grid-content');
+            const button = document.getElementById('toggle-summary');
+            content.classList.toggle('collapsed');
+            if (content.classList.contains('collapsed')) {
+                button.textContent = '+';
+            } else {
+                button.textContent = '-';
+            }
+        }
+
+        function copySummaryToClipboard() {
+            const perfil = (document.getElementById('perfil-cliente-target').innerText || '').replace(/\n/g, '; ');
+            const ambicao = document.getElementById('ambicao-target').innerText || '';
+            const dor = document.getElementById('dor-target').innerText || '';
+            const sonho = document.getElementById('sonho-target').innerText || '';
+            const transformacao = document.getElementById('transformacao-target').innerText || '';
+            const consciencia = document.getElementById('consciencia-target').innerText || '';
+
+            const tsvText = [perfil, ambicao, dor, sonho, transformacao, consciencia].join('\t');
+
+            const tempTextarea = document.createElement('textarea');
+            tempTextarea.value = tsvText;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextarea);
+            
+            const copyButton = document.getElementById('copy-summary');
+            copyButton.textContent = 'Copiado!';
+            setTimeout(() => {
+                copyButton.textContent = 'Copiar';
+            }, 2000);
+        }
+        
+        function copyLink(inputId, buttonElement) {
+            const linkInput = document.getElementById(inputId);
+            linkInput.select();
+            linkInput.setSelectionRange(0, 99999); // For mobile devices
+
+            try {
+                document.execCommand('copy');
+                buttonElement.textContent = 'Copiado!';
+                setTimeout(() => {
+                    buttonElement.textContent = 'Copiar';
+                }, 2000);
+            } catch (err) {
+                console.error('Falha ao copiar o link: ', err);
+                buttonElement.textContent = 'Erro!';
+                 setTimeout(() => {
+                    buttonElement.textContent = 'Copiar';
+                }, 2000);
+            }
+
+            window.getSelection().removeAllRanges();
+        }
+
+        // --- LÓGICA DE DADOS (localStorage) ---
+        const consciousnessLevels = {
+            'control1': 'INCS', 'control2': 'CSP', 'control3': 'CSS',
+            'control4': 'CSO',  'control5': 'CS'
+        };
+        const recommendations = {
+            'INCS': 'PASSAR TODO O PLANO DE AÇÃO.',
+            'CSP': 'APROFUNDAR EM UM PILAR ESPECIFICO (FALAR ALGO)',
+            'CSS': 'REFORÇAR O CONHECIMENTO COMO CAMINHO PARA VENDER',
+            'CSO': 'MAS TEVE MUITA DIFICULDADE PRA CONTINUAR OU QUE JA TEVE EXPERIENCIAS RUINS COM OUTROS CURSOS OU EXPERTS E DIFERENCIAL DO PRODUTO',
+            'CS': 'ELEVAR O CLIENTE Á CONDIÇÃO DE TOMADOR DE VANTAGEM E DE AMIGO'
+        };
+
+        function saveLeadData() {
+            const fieldsToSave = [
+                'lead-name', 'rapport1', 'rapport2', 'rapport3', 'rapport4', 'rapport5',
+                'maior-sonho-input'
+            ];
+            fieldsToSave.forEach(id => localStorage.setItem(id, document.getElementById(id).value));
+            
+            localStorage.setItem('maiorSonho', document.getElementById('maior-sonho-input').value);
+
+            updateEscavacaoDisplay();
+            if (document.getElementById('projecao-page').classList.contains('active')) {
+                renderProjecaoScripts();
+            }
+        }
+
+        function updateControlAndConsciousness() {
+            const controlFields = ['control1', 'control2', 'control3', 'control4', 'control5'];
+            controlFields.forEach(id => localStorage.setItem(id, document.getElementById(id).value));
+            updateEscavacaoDisplay();
+        }
+        
+        function updateTransformationFromProjecao(value) {
+            localStorage.setItem('transformacao', value);
+            updateEscavacaoDisplay();
+            renderProjecaoScripts();
+        }
+
+        // --- LÓGICAS DE ATUALIZAÇÃO DE TELA ---
+        function updateEscavacaoDisplay() {
+            const leadNameAndAge = localStorage.getItem('lead-name') || '';
+            const rapportValues = [
+                `Nome/Idade: ${leadNameAndAge}`,
+                `Mora em: ${localStorage.getItem('rapport1') || ''}`,
+                `Família/Lazer: ${localStorage.getItem('rapport2') || ''}`,
+                `Nomes (família): ${localStorage.getItem('rapport3') || ''}`,
+                `Nomes (esposa/mãe): ${localStorage.getItem('rapport4') || ''}`,
+                `Trabalho: ${localStorage.getItem('rapport5') || ''}`
+            ];
+            const perfilText = rapportValues
+                .filter(line => line.split(': ')[1] && line.split(': ')[1].trim() !== '')
+                .join('\n');
+            document.getElementById('perfil-cliente-target').innerText = perfilText;
+
+            document.getElementById('ambicao-target').innerText = localStorage.getItem('control1') || '';
+            document.getElementById('dor-target').innerText = localStorage.getItem('control2') || '';
+            document.getElementById('sonho-target').innerText = localStorage.getItem('maiorSonho') || '';
+            
+            const finalTransformacao = localStorage.getItem('transformacao') || '';
+            document.getElementById('transformacao-target').innerText = finalTransformacao;
+
+            const controlValues = [
+                localStorage.getItem('control1') || '', localStorage.getItem('control2') || '',
+                localStorage.getItem('control3') || '', localStorage.getItem('control4') || '',
+                localStorage.getItem('control5') || ''
+            ];
+
+            let lastAnsweredIndex = -1;
+            for (let i = controlValues.length - 1; i >= 0; i--) {
+                if (controlValues[i] && controlValues[i].trim() !== '') {
+                    lastAnsweredIndex = i;
+                    break;
+                }
+            }
+
+            const consciousnessTarget = document.getElementById('consciencia-target');
+            if (lastAnsweredIndex !== -1) {
+                const lastLevel = Object.values(consciousnessLevels)[lastAnsweredIndex];
+                consciousnessTarget.innerText = lastLevel;
+                localStorage.setItem('consciousnessLevel', lastLevel);
+            } else {
+                consciousnessTarget.innerText = '';
+                localStorage.removeItem('consciousnessLevel');
+            }
+        }
+
+        function updatePlanoAcaoDisplay() {
+            const consciousnessLevel = localStorage.getItem('consciousnessLevel');
+            const displayElement = document.getElementById('consciousness-level-display');
+            const recommendationElement = document.getElementById('recommendation-display');
+
+            if (consciousnessLevel) {
+                displayElement.innerText = `Nível de Consciência: ${consciousnessLevel}`;
+                recommendationElement.innerText = `Recomendação: ${recommendations[consciousnessLevel] || ''}`;
+            } else {
+                displayElement.innerText = 'Nível de Consciência não definido';
+                recommendationElement.innerText = 'Volte para a página de Escavação para definir o nível.';
+            }
+        }
+        
+        function getLeadNameOnly() {
+            const leadNameAndAge = localStorage.getItem('lead-name') || '[LEAD]';
+            const name = leadNameAndAge.split(',')[0].trim();
+            return name.toUpperCase();
+        }
+
+        function renderProjecaoScripts() {
+            const leadName = `<strong>${getLeadNameOnly()}</strong>`;
+            const sonho = localStorage.getItem('maiorSonho') || '[SONHO]';
+            const ambicao = localStorage.getItem('control1') || '[AMBIÇÃO]';
+            const dor = localStorage.getItem('control2') || '[DOR]';
+            const transformacao = localStorage.getItem('transformacao') || '[TRANSFORMAÇÃO]';
+
+            document.getElementById('projecao-script-1').innerHTML = `Se estivéssemos tendo essa conversa daqui 12 meses no <span class="placeholder sonho">${sonho}</span>, e você me encontrasse, quais conquistas você teria de ter realizado para estar 100% feliz e realizado? O que voce diria pra mim nesse encontro?`;
+            document.getElementById('projecao-script-2-static').innerHTML = `Certo, ${leadName}, eu entendi que você quer <span class="placeholder ambicao">${ambicao}</span>. Mas me fala aqui, por que você acredita que ainda não conseguiu atingir isso fazendo o que você está fazendo hoje em dia? O que você acredita que está faltando?`;
+            document.getElementById('projecao-script-3').innerHTML = `${leadName}, diante de tudo o que conversamos você acha que todas essas soluções que a gente montou junto é um bom plano de ação para te ajudar a conseguir <span class="placeholder sonho">${sonho}</span> atraves de <span class="placeholder ambicao">${ambicao}</span>?`;
+            document.getElementById('projecao-script-4').innerHTML = `${leadName}, você agora tem dois caminhos: 1-continuar onde esta ou quebrar a cabeça para fazer tudo manualmente e sozinho. 2-ter a minha ajuda e da minha equipe hoje te ajudando a chegar mais rapido, com passo a passos claros no <span class="placeholder sonho">${sonho}</span>. Você concorda que o segundo caminho é a melhor escolha para seu momento atual?`;
+            document.getElementById('projecao-script-5').innerHTML = `${leadName}, agora quero saber se você quer que eu te mostre como posso te ajudar no passo a passo para você ter <span class="placeholder transformacao">${transformacao}</span>, sem lidar com <span class="placeholder dor">${dor}</span> mostrando como será seu ENVOLVIMENTO nisso?`;
+        }
+        
+        function renderFechamentoScripts() {
+            const leadName = `<strong>${getLeadNameOnly()}</strong>`;
+            const transformacao = localStorage.getItem('transformacao') || '[TRANSFORMAÇÃO]';
+
+            document.getElementById('fechamento-script-1').innerHTML = `Hoje O JAPÃO, entrega uma CONSULTORIA INDIVIDUAL chamada SAMURAI PROTOCOL com os conteúdos que conversamos aqui + UMA TUTORIA com 3 PROFESSORES ao vivo para tirar as dúvidas, 24horas por dia / 7 dias na semana e direito a todas ferramentas gratuitas dentro de um ano e o valor do acesso é R$4997...`;
+            document.getElementById('fechamento-script-2').innerHTML = `${leadName}, me responda com toda sinceridade... você acredita ser uma pessoa honesta?<br>Então me responda com toda honestidade quanto você acredita que valeria uma mentoria de 1 ano que traria pra você <span class="transformacao-placeholder">${transformacao}</span>?<br>Hoje você me da a certeza que está comprometido em iniciar essa operaçao ${leadName}<br><br>baseado em tudo que você me trouxe eu vou te fazer um convite genuino! Participar da nossa ultima vaga da MENTORIA JAPAO PROTOCOL!<br><br>E EU NEM PODERIA ESTAR FAZENDO ISSO, MAS... VOU FAZER POR QUE EU ACREDITO QUE VOCÊ REALMENTE É CAPACITADO PARA PARTICIPAR E VAI AGREGAR MUITO COM SUA MISSÃO NA COMUNIDADE...<br>VOU DESCOLAR PRA VOCÊ UM ACESSO NO NOSSO ANTIGO PREÇO.`;
+            document.getElementById('fechamento-script-3').innerHTML = `APENAS 997,00 Á VISTA OU 12X DE 100,00<br><br>PERGUNTE: Á PRIORI, COMO SERIA MELHOR FORMA DE PAGAMENTO PARA VOCÊ... NO CARTÃO DE CREDITO OU Á VISTA?`;
+            document.getElementById('fechamento-script-4').innerHTML = `✅ Acesso SEGURO à AREA DE MEMBROS JAPAO PROTOCOL com aulas ATUALIZADAS que vao te ensinar <br><br>- Como selecionar e criar conta nos mais lucrativos sites de apostas.<br><br>- Fazer a sua primeira entrada ao vivo com um operador profissional.<br><br>- Fazer a gestao da banca ao vivo com a ajuda dos professores.<br><br>- Voce tera acesso para aprender ao vivo como fazer entradas com todas casas, esportes, times e mercados.`;
+            document.getElementById('fechamento-script-5').innerHTML = `✅ Sala EXCLUSIVA de operaçoes com 3 professores disponiveis 24/7<br>✅ Grupo VIP com suporte + networking com alunos <br>✅ Correção de entradas AO VIVO.<br>✅ Se você não lucrar mais que pagou ou tiver qualquer perda seguindo nosso passo a passo eu pessoalmente te devolo o dinheiro investido mais 500 reais na sua banca.`;
+            document.getElementById('fechamento-script-6').innerHTML = `Acesso ao curso japao protocol com aulas gravadas <br>1 mês de Surentrix liberado<br>1 mês de empurraozinho <br> SORTEIO DE BANCA E PIX`;
+            document.getElementById('fechamento-script-7').innerHTML = `Esse valor infelizmente eu só consigo fazer pra você aqui na ligaçao por que realmente eu nem poderia fazer isso mas fiz por ser a ultima vaga e por voce parecer ser um cara de valor pra comunidade.`;
+        }
+
+
+        // --- INICIALIZAÇÃO ---
+        function initializeApp() {
+            // Carrega todos os dados salvos ao iniciar
+            const fieldsToLoad = [
+                'lead-name', 'rapport1', 'rapport2', 'rapport3', 'rapport4', 'rapport5',
+                'control1', 'control2', 'control3', 'control4', 'control5',
+                'maior-sonho-input'
+            ];
+            fieldsToLoad.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.value = localStorage.getItem(id) || '';
+                }
+            });
+            document.getElementById('transformacao-input-projecao').value = localStorage.getItem('transformacao') || '';
+
+            updateEscavacaoDisplay();
+            showPage('escavacao-page');
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+    </script>
+</body>
+</html>
